@@ -56,6 +56,9 @@ class DecaInt32 {
    public void divideDecaInt32(DecaInt32 num2) {
       this.rawValue = (this.rawValue * this.PRECISION) / convertToThisPrecision(num2);
    }
+   public void modDecaInt32(DecaInt32 num2) {
+      this.rawValue = (this.rawValue) % convertToThisPrecision(num2);
+   }
 
    
    // Converts the decaInt value to whatever
