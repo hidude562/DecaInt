@@ -27,6 +27,7 @@ class DecaInt32 {
         this.decimalPlaces = temp;
     }
 
+    // Returns the raw value of the number as the object's precision.
     public int convertToThisPrecision(DecaInt32 number) {
         int out = number.rawValue;
         if(number.PRECISION != this.PRECISION) {
@@ -41,29 +42,35 @@ class DecaInt32 {
 
 
     // These are the most maintained functions in the program
-    // The behavior of these functions set the precision to be the precision of the first num
+    // The behavior of these functions set the precision to be the precision of the object
     // TODO: Add a precision input for this
 
-    public void addDecaInt32(DecaInt32 num1, DecaInt32 num2) {
-        num1.rawValue += convertToThisPrecision(num2);
-        this.rawValue = num1.rawValue;
+    public DecaInt32 addDecaInt32(DecaInt32 num1, DecaInt32 num2) {
+        DecaInt32 newValue = new DecaInt32(0, this.PRECISION);
+        newValue.rawValue = convertToThisPrecision(num1) + convertToThisPrecision(num2);
+        return newValue;
     }
-    public void subtractDecaInt32(DecaInt32 num1, DecaInt32 num2) {
-        num1.rawValue -= convertToThisPrecision(num2);
-        this.rawValue = num1.rawValue;
+    public DecaInt32 subtractDecaInt32(DecaInt32 num1, DecaInt32 num2) {
+        DecaInt32 newValue = new DecaInt32(0, this.PRECISION);
+        newValue.rawValue = convertToThisPrecision(num1) - convertToThisPrecision(num2);
+        return newValue;
+
     }
-    public void multiplyDecaInt32(DecaInt32 num1, DecaInt32 num2) {
-        num1.rawValue *= convertToThisPrecision(num2);
-        num1.rawValue /= (this.PRECISION);
-        this.rawValue = num1.rawValue;
+    public DecaInt32 multiplyDecaInt32(DecaInt32 num1, DecaInt32 num2) {
+        DecaInt32 newValue = new DecaInt32(0, this.PRECISION);
+        newValue.rawValue = convertToThisPrecision(num1) * convertToThisPrecision(num2);
+        newValue.rawValue /= (this.PRECISION);
+        return newValue;
     }
-    public void divideDecaInt32(DecaInt32 num1, DecaInt32 num2) {
-        num1.rawValue = (num1.rawValue * this.PRECISION) / convertToThisPrecision(num2);
-        this.rawValue = num1.rawValue;
+    public DecaInt32 divideDecaInt32(DecaInt32 num1, DecaInt32 num2) {
+        DecaInt32 newValue = new DecaInt32(0, this.PRECISION);
+        newValue.rawValue = (convertToThisPrecision(num1) * this.PRECISION) / convertToThisPrecision(num2);
+        return newValue;
     }
-    public void modDecaInt32(DecaInt32 num1, DecaInt32 num2) {
-        num1.rawValue = (num1.rawValue) % convertToThisPrecision(num2);
-        this.rawValue = num1.rawValue;
+    public DecaInt32 modDecaInt32(DecaInt32 num1, DecaInt32 num2) {
+        DecaInt32 newValue = new DecaInt32(0, this.PRECISION);
+        newValue.rawValue = convertToThisPrecision(num1) % convertToThisPrecision(num2);
+        return newValue;
     }
 
 
