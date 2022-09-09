@@ -1,6 +1,6 @@
 TODO:
 
-Add all basic math operators
+✔️ Add all basic math operators
+Fix broken file structure of this repo / proper package things
 Add more complex operators
 Add 16/64/128 bit version
-
