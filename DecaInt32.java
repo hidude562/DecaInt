@@ -4,6 +4,8 @@ class DecaInt32 {
     int displayDecimalLen;
     int decimalPlaces;
     final int TO_DECA; // TODO: better naming
+    
+    // TODO: Auto precision, ex: 0.25 input = precision 4, mod of input, then 1 / input?
 
     public DecaInt32(int rawValue, int PRECISION) {
         this.rawValue = rawValue * PRECISION;
@@ -29,11 +31,13 @@ class DecaInt32 {
 
     // Returns the raw value of the number as the object's precision.
     public int convertToThisPrecision(DecaInt32 number) {
-        int out = number.rawValue;
+        // This is stored as twice the data width as to not overflow the value
+        long out = number.rawValue;
+        
         if(number.PRECISION != this.PRECISION) {
-            out = (number.rawValue * this.PRECISION) / number.PRECISION;
+            out = (long) number.rawValue * this.PRECISION / number.PRECISION;
         }
-        return out;
+        return (int) out;
     }
 
     public void addIntRaw(int number) {
@@ -56,15 +60,16 @@ class DecaInt32 {
         return newValue;
 
     }
+    
+    // For the division / multiplication, you have to temporarily store a 64 bit int to not lose data
     public DecaInt32 multiplyDecaInt32(DecaInt32 num1, DecaInt32 num2) {
         DecaInt32 newValue = new DecaInt32(0, this.PRECISION);
-        newValue.rawValue = convertToThisPrecision(num1) * convertToThisPrecision(num2);
-        newValue.rawValue /= (this.PRECISION);
+        newValue.rawValue = (int) (((long) convertToThisPrecision(num1) * convertToThisPrecision(num2)) / (this.PRECISION));
         return newValue;
     }
     public DecaInt32 divideDecaInt32(DecaInt32 num1, DecaInt32 num2) {
         DecaInt32 newValue = new DecaInt32(0, this.PRECISION);
-        newValue.rawValue = (convertToThisPrecision(num1) * this.PRECISION) / convertToThisPrecision(num2);
+        newValue.rawValue = (int) (((long) convertToThisPrecision(num1) * this.PRECISION) / convertToThisPrecision(num2));
         return newValue;
     }
     public DecaInt32 modDecaInt32(DecaInt32 num1, DecaInt32 num2) {
