@@ -1,4 +1,4 @@
-package com.DecaInt.demos.PiDemo;
+package DecaInt.DecaInt32.demos.PiDemo;
 
 class PiDemo {
     public static void main(String[] args) {
