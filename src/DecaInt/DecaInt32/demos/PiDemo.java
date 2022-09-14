@@ -1,5 +1,7 @@
 package DecaInt.DecaInt32.demos.PiDemo;
 
+import DecaInt.DecaInt32.DecaInt32;
+
 class PiDemo {
     public static void main(String[] args) {
       // This is a demo using DecaInt32, it uses the Leibniz formula to calculate Pi
