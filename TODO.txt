@@ -1,6 +1,8 @@
 TODO:
 
 ✔️ Add all basic math operators
-✔️ (kinda, maybe fixed?) Fix broken file structure of this repo / proper package things
+Better syntax for using the class (no unnecessary params)
+Overloaded methods (for example, divide DecaInt by int value)
 Add more complex operators
+✔️ (kinda, maybe fixed?) Fix broken file structure of this repo / proper package things
 Add 16/64/128 bit version
