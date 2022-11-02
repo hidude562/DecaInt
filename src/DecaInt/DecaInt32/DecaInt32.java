@@ -13,13 +13,11 @@ class DecaInt32 {
         this.rawValue = rawValue * precision;
         init(precision);
     }
-
     // Also uses a float for this constructor here
     public DecaInt32(double rawValue, int precision) {
         this.rawValue = (int) (rawValue * precision);
         init(precision);
     }
-
     public DecaInt32(DecaInt32 num1) {
         // Pretty much just copy the contents of num1 to the current class
         this.rawValue = num1.rawValue;
@@ -28,7 +26,6 @@ class DecaInt32 {
         this.decimalPlaces = num1.decimalPlaces;
         this.toDeca = num1.toDeca;
     }
-
     public void init(int precision) {
         this.precision = precision;
         int precision_len_temp = String.valueOf(this.precision).length();
@@ -49,7 +46,6 @@ class DecaInt32 {
 
         this.decimalPlaces = temp;
     }
-
     // Returns the raw value of the number as the object's precision.
     public int convertToThisPrecision(DecaInt32 number) {
         // This is stored as twice the data width as to not overflow the value
@@ -61,12 +57,16 @@ class DecaInt32 {
         return (int) out;
     }
 
+    
     public void addIntRaw(int number) {
         this.rawValue += number;
     }
 
     public void setTo(DecaInt32 num1) {
         this.rawValue = convertToThisPrecision(num1);
+    }
+    public void setTo(int num1) {
+        this.rawValue = this.precision * num1;
     }
 
 
@@ -83,7 +83,6 @@ class DecaInt32 {
         DecaInt32 newValue = new DecaInt32(0, this.precision);
         newValue.rawValue = convertToThisPrecision(num1) - convertToThisPrecision(num2);
         return newValue;
-
     }
 
     // For the division / multiplication, you have to temporarily store a 64 bit int to not lose data
@@ -104,7 +103,7 @@ class DecaInt32 {
     }
     public DecaInt32 sqrtDecaInt32(DecaInt32 num1) {
 
-        // Credit to https://+math.stackexchange.com/questions/265690/continued-fraction-of-a-square-root for the maths help
+        // Credit to https://math.stackexchange.com/questions/265690/continued-fraction-of-a-square-root for the maths help
         // This uses continued fractions to approximate the sqrt function
 
         DecaInt32 newValue = new DecaInt32(this.divideDecaInt32(num1, new DecaInt32(2, 1)));
