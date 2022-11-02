@@ -1,6 +1,8 @@
 TODO:
 
 ✔️ Add all basic math operators
+More setTo functions
+Be able to cast an int to a DecaInt (if its possible)
 Better syntax for using the class (no unnecessary params)
 Overloaded methods (for example, divide DecaInt by int value)
 Add more complex operators
