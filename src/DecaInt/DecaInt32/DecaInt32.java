@@ -26,6 +26,7 @@ class DecaInt32 {
         this.decimalPlaces = num1.decimalPlaces;
         this.toDeca = num1.toDeca;
     }
+
     public void init(int precision) {
         this.precision = precision;
         int precision_len_temp = String.valueOf(this.precision).length();
@@ -51,13 +52,13 @@ class DecaInt32 {
         // This is stored as twice the data width as to not overflow the value
         long out = number.rawValue;
 
-        if(number.precision != this.precision) {
+        if (number.precision != this.precision) {
             out = (long) number.rawValue * this.precision / number.precision;
         }
         return (int) out;
     }
 
-    
+
     public void addIntRaw(int number) {
         this.rawValue += number;
     }
@@ -69,6 +70,23 @@ class DecaInt32 {
         this.rawValue = this.precision * num1;
     }
 
+    // Return some constants in this precision
+    public DecaInt32 PI() {
+        DecaInt32 PI = (new DecaInt32(0, 50000000));
+        PI.rawValue = 157079632;
+        DecaInt32 newValue = new DecaInt32(0, this.precision);
+        newValue.setTo(PI);
+        return newValue;
+    }
+    public DecaInt32 E() {
+        DecaInt32 E = (new DecaInt32(0, 50000000));
+        E.rawValue = 135914091;
+        DecaInt32 newValue = new DecaInt32(0, this.precision);
+        newValue.setTo(E);
+        return newValue;
+    }
+
+    // *TODO* add method that returns max and min value for number
 
     // These are the most maintained functions in the program
     // The behavior of these functions set the precision to be the precision of the object
