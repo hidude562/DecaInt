@@ -162,6 +162,12 @@ class DecaInt32 {
         // Example, (3.33 ->-> 3.00) == 3.00
         return this.rawValue == this.convertToThisPrecision(num1);
     }
+    public boolean greaterThan(DecaInt32 num1) {
+        return this.rawValue > this.convertToThisPrecision(num1);
+    }
+    public boolean lessThan(DecaInt32 num1) {
+        return this.rawValue < this.convertToThisPrecision(num1);
+    }
 
     public int returnRawValue() {
         return this.rawValue;
