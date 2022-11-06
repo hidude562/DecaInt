@@ -59,6 +59,7 @@ class DecaInt32 {
     }
 
 
+
     public void addIntRaw(int number) {
         this.rawValue += number;
     }
@@ -71,6 +72,7 @@ class DecaInt32 {
     }
 
     // Return some constants in this precision
+    // TODO: Fix some precision conversion errors that occur with this.
     public DecaInt32 PI() {
         DecaInt32 PI = (new DecaInt32(0, 50000000));
         PI.rawValue = 157079632;
@@ -86,7 +88,7 @@ class DecaInt32 {
         return newValue;
     }
 
-    // *TODO* add method that returns max and min value for number
+    // TODO: add method that returns max and min value for number
 
     // These are the most maintained functions in the program
     // The behavior of these functions set the precision to be the precision of the object
@@ -99,7 +101,7 @@ class DecaInt32 {
     public DecaInt32 addDecaInt32(DecaInt32 num2) {
         return addDecaInt32(this, num2);
     }
-    
+
     public DecaInt32 subtractDecaInt32(DecaInt32 num1, DecaInt32 num2) {
         DecaInt32 newValue = new DecaInt32(0, this.precision);
         newValue.rawValue = convertToThisPrecision(num1) - convertToThisPrecision(num2);
@@ -108,7 +110,7 @@ class DecaInt32 {
     public DecaInt32 subtractDecaInt32(DecaInt32 num2) {
         return subtractDecaInt32(this, num2);
     }
-    
+
     // For the division / multiplication, you have to temporarily store a 64 bit int to not lose data
     public DecaInt32 multiplyDecaInt32(DecaInt32 num1, DecaInt32 num2) {
         DecaInt32 newValue = new DecaInt32(0, this.precision);
@@ -118,7 +120,7 @@ class DecaInt32 {
     public DecaInt32 multiplyDecaInt32(DecaInt32 num2) {
         return multiplyDecaInt32(this, num2);
     }
-    
+
     public DecaInt32 divideDecaInt32(DecaInt32 num1, DecaInt32 num2) {
         DecaInt32 newValue = new DecaInt32(0, this.precision);
         newValue.rawValue = (int) (((long) convertToThisPrecision(num1) * this.precision) / convertToThisPrecision(num2));
@@ -127,7 +129,7 @@ class DecaInt32 {
     public DecaInt32 divideDecaInt32(DecaInt32 num2) {
         return divideDecaInt32(this, num2);
     }
-    
+
     public DecaInt32 modDecaInt32(DecaInt32 num1, DecaInt32 num2) {
         DecaInt32 newValue = new DecaInt32(0, this.precision);
         newValue.rawValue = convertToThisPrecision(num1) % convertToThisPrecision(num2);
@@ -155,6 +157,43 @@ class DecaInt32 {
     }
     public DecaInt32 sqrtDecaInt32() {
         return sqrtDecaInt32(this);
+    }
+
+    public DecaInt32 lnDecaInt32(DecaInt32 num1) {
+        // Retrieve E
+        final DecaInt32 E = E();
+        final DecaInt32 ONE_OVER_E = E.divideDecaInt32(new DecaInt32(1, this.precision), E);
+        System.out.println(ONE_OVER_E);
+        // TODO: Add a method for a higher precision level
+        DecaInt32 newValue = new DecaInt32(0, this.precision);
+        DecaInt32 x = new DecaInt32(num1);
+
+        // According to math, ln(20) is equal to ln(5) + ln(4)
+        // Also the natural log of a multiple of e will always be integer
+        // We can use this to skip alot of extra computation.
+        // Computational complexity: abs(ceil(ln(x) - 1)) + 1
+
+        if(x.greaterThan(ONE_OVER_E)) {
+            while(x.greaterThan(E)) {
+                x.setTo(x.divideDecaInt32(x, E));
+                newValue.setTo(newValue.addDecaInt32(new DecaInt32(1, 1)));
+            }
+        } else {
+            while(x.lessThan(ONE_OVER_E)) {
+                x.setTo(x.multiplyDecaInt32(x, E));
+                newValue.setTo(newValue.subtractDecaInt32(new DecaInt32(1, 1)));
+            }
+        }
+
+        // This looks a *bit* sloppy but it reads:
+        // (3 * x * x - 3) / (x * x + 4 * x + 1)
+
+        // It is the Pade approximation for a log function
+        newValue.setTo(newValue.addDecaInt32(newValue, (x.multiplyDecaInt32(x).multiplyDecaInt32(new DecaInt32(3, 1)).subtractDecaInt32(new DecaInt32(3, 1))).divideDecaInt32((x.multiplyDecaInt32(x).addDecaInt32(x.multiplyDecaInt32(new DecaInt32(4, 1))).addDecaInt32(new DecaInt32(1, 1))))));
+        return newValue;
+    }
+    public DecaInt32 lnDecaInt32() {
+        return lnDecaInt32(this);
     }
 
 
