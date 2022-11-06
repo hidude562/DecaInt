@@ -90,35 +90,53 @@ class DecaInt32 {
 
     // These are the most maintained functions in the program
     // The behavior of these functions set the precision to be the precision of the object
-    // TODO: Add a precision input for this
 
     public DecaInt32 addDecaInt32(DecaInt32 num1, DecaInt32 num2) {
         DecaInt32 newValue = new DecaInt32(0, this.precision);
         newValue.rawValue = convertToThisPrecision(num1) + convertToThisPrecision(num2);
         return newValue;
     }
+    public DecaInt32 addDecaInt32(DecaInt32 num2) {
+        return addDecaInt32(this, num2);
+    }
+    
     public DecaInt32 subtractDecaInt32(DecaInt32 num1, DecaInt32 num2) {
         DecaInt32 newValue = new DecaInt32(0, this.precision);
         newValue.rawValue = convertToThisPrecision(num1) - convertToThisPrecision(num2);
         return newValue;
     }
-
+    public DecaInt32 subtractDecaInt32(DecaInt32 num2) {
+        return subtractDecaInt32(this, num2);
+    }
+    
     // For the division / multiplication, you have to temporarily store a 64 bit int to not lose data
     public DecaInt32 multiplyDecaInt32(DecaInt32 num1, DecaInt32 num2) {
         DecaInt32 newValue = new DecaInt32(0, this.precision);
         newValue.rawValue = (int) (((long) convertToThisPrecision(num1) * convertToThisPrecision(num2)) / (this.precision));
         return newValue;
     }
+    public DecaInt32 multiplyDecaInt32(DecaInt32 num2) {
+        return multiplyDecaInt32(this, num2);
+    }
+    
     public DecaInt32 divideDecaInt32(DecaInt32 num1, DecaInt32 num2) {
         DecaInt32 newValue = new DecaInt32(0, this.precision);
         newValue.rawValue = (int) (((long) convertToThisPrecision(num1) * this.precision) / convertToThisPrecision(num2));
         return newValue;
     }
+    public DecaInt32 divideDecaInt32(DecaInt32 num2) {
+        return divideDecaInt32(this, num2);
+    }
+    
     public DecaInt32 modDecaInt32(DecaInt32 num1, DecaInt32 num2) {
         DecaInt32 newValue = new DecaInt32(0, this.precision);
         newValue.rawValue = convertToThisPrecision(num1) % convertToThisPrecision(num2);
         return newValue;
     }
+    public DecaInt32 modDecaInt32(DecaInt32 num2) {
+        return modDecaInt32(this, num2);
+    }
+
     public DecaInt32 sqrtDecaInt32(DecaInt32 num1) {
 
         // Credit to https://math.stackexchange.com/questions/265690/continued-fraction-of-a-square-root for the maths help
@@ -134,6 +152,9 @@ class DecaInt32 {
             newValue.setTo(newValue.divideDecaInt32(newValue.addDecaInt32(newValue.divideDecaInt32(num1, a), a), new DecaInt32(2, 1)));
         }
         return newValue;
+    }
+    public DecaInt32 sqrtDecaInt32() {
+        return sqrtDecaInt32(this);
     }
 
 
