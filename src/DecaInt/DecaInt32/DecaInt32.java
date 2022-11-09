@@ -1,4 +1,4 @@
-package DecaInt.DecaInt32.DecaInt32;
+//package DecaInt.DecaInt32.DecaInt32;
 
 class DecaInt32 {
     public int rawValue;
@@ -204,7 +204,7 @@ class DecaInt32 {
 
     public DecaInt32 ePowerDecaInt32(DecaInt32 num1) {
         // TODO: Chnage based off of precision
-        int maxIter = num1.toInt() + 3;
+        int maxIter = num1.toInt() + 6;
         DecaInt32 newValue = toDecaInt32(maxIter * 4 + 6);
         newValue.changePrecision(this.precision);
 
@@ -221,6 +221,15 @@ class DecaInt32 {
 
     public DecaInt32 ePowerDecaInt32() {
         return ePowerDecaInt32(this);
+    }
+    
+    public DecaInt32 powDecaInt32(DecaInt32 num1, DecaInt32 num2) {
+         // num1 ^ num2 where num1 and num2 can be any real number, even decimals (finally!)
+         return this.ePowerDecaInt32(this.multiplyDecaInt32(num2, this.lnDecaInt32(num1)));
+    }
+    
+    public DecaInt32 powDecaInt32(DecaInt32 num2) {
+        return powDecaInt32(this, num2);
     }
 
     public DecaInt32 toDecaInt32(int num1) {
