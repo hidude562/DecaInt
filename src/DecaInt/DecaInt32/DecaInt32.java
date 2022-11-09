@@ -13,6 +13,7 @@ class DecaInt32 {
         this.rawValue = rawValue * precision;
         init(precision);
     }
+
     // Also uses a float for this constructor here
     public DecaInt32(double rawValue, int precision) {
         this.rawValue = (int) (rawValue * precision);
@@ -39,6 +40,12 @@ class DecaInt32 {
         this.decimalPlaces = temp;
         this.toDeca = decimalPlaces / precision;
     }
+
+    public void changePrecision(int precision) {
+        this.rawValue = (int) (((((long) precision * 2147483647) / this.precision) * this.rawValue) / 2147483647);
+        this.precision = precision;
+    }
+
     public void changeDisplayPrecision(int precision) { // TODO:
         this.displayDecimalLen = precision;
         int temp = 1;
@@ -53,7 +60,7 @@ class DecaInt32 {
         long out = number.rawValue;
 
         if (number.precision != this.precision) {
-            out = (long) number.rawValue * this.precision / number.precision;
+            out = (int) (((((long) this.precision * 2147483647) / number.precision) * number.rawValue) / 2147483647);
         }
         return (int) out;
     }
@@ -163,7 +170,6 @@ class DecaInt32 {
         // Retrieve E
         final DecaInt32 E = E();
         final DecaInt32 ONE_OVER_E = E.divideDecaInt32(new DecaInt32(1, this.precision), E);
-        System.out.println(ONE_OVER_E);
         // TODO: Add a method for a higher precision level
         DecaInt32 newValue = new DecaInt32(0, this.precision);
         DecaInt32 x = new DecaInt32(num1);
@@ -196,6 +202,30 @@ class DecaInt32 {
         return lnDecaInt32(this);
     }
 
+    public DecaInt32 ePowerDecaInt32(DecaInt32 num1) {
+        // TODO: Chnage based off of precision
+        int maxIter = num1.toInt() + 3;
+        DecaInt32 newValue = toDecaInt32(maxIter * 4 + 6);
+        newValue.changePrecision(this.precision);
+
+        // (iter * 4 + 6) + num1 * num1 / newValue;
+        for(int iter = maxIter - 1; iter > -1; iter--) {
+            newValue.setTo(this.addDecaInt32(toDecaInt32((iter * 4) + 6), this.multiplyDecaInt32(num1, num1).divideDecaInt32(newValue)));
+            System.out.println(iter + " : " + newValue);
+        }
+        System.out.println(newValue.precision);
+        // 1 + (2 * num1) / ((2 - num1) + ((num1 * num1) / newValue));
+        newValue.setTo(this.addDecaInt32(toDecaInt32(1), this.multiplyDecaInt32(num1, toDecaInt32(2)).divideDecaInt32((this.subtractDecaInt32(toDecaInt32(2), num1)).addDecaInt32(this.multiplyDecaInt32(num1, num1).divideDecaInt32(newValue)))));
+        return newValue;
+    }
+
+    public DecaInt32 ePowerDecaInt32() {
+        return ePowerDecaInt32(this);
+    }
+
+    public DecaInt32 toDecaInt32(int num1) {
+        return new DecaInt32(num1, 1);
+    }
 
     // Converts the decaInt value to whatever
     public String toString() {
@@ -203,6 +233,9 @@ class DecaInt32 {
         String decaIntToString = String.valueOf((this.rawValue / this.precision)) + "." + decimalPoint;
         return decaIntToString;
     }
+
+    // TODO: Make the toInt, and other stuff in a 'utils' class or just format it differently or something
+
     public int toInt() {
         // Doesn't round.
         int decaIntToInt = this.rawValue / this.precision;
@@ -212,7 +245,6 @@ class DecaInt32 {
     // This is the only time this program uses a floating point number.
     public double toDouble() {
         String decimalPoint = String.format("%0"+ ((this.displayDecimalLen - 1)) + "d", Math.abs((this.rawValue % precision) * this.toDeca));
-        System.out.println( this.toDeca);
         double decaIntToDouble = Double.parseDouble(String.valueOf((this.rawValue / this.precision)) + "." + decimalPoint);
         return decaIntToDouble;
     }
@@ -227,9 +259,5 @@ class DecaInt32 {
     }
     public boolean lessThan(DecaInt32 num1) {
         return this.rawValue < this.convertToThisPrecision(num1);
-    }
-
-    public int returnRawValue() {
-        return this.rawValue;
     }
 }
