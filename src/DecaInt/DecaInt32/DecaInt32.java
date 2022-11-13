@@ -1,4 +1,5 @@
-//package DecaInt.DecaInt32.DecaInt32;
+// TODO: Test package to ensure it works
+package DecaInt.DecaInt32.DecaInt32;
 
 class DecaInt32 {
     public int rawValue;
@@ -211,9 +212,7 @@ class DecaInt32 {
         // (iter * 4 + 6) + num1 * num1 / newValue;
         for(int iter = maxIter - 1; iter > -1; iter--) {
             newValue.setTo(this.addDecaInt32(toDecaInt32((iter * 4) + 6), this.multiplyDecaInt32(num1, num1).divideDecaInt32(newValue)));
-            System.out.println(iter + " : " + newValue);
         }
-        System.out.println(newValue.precision);
         // 1 + (2 * num1) / ((2 - num1) + ((num1 * num1) / newValue));
         newValue.setTo(this.addDecaInt32(toDecaInt32(1), this.multiplyDecaInt32(num1, toDecaInt32(2)).divideDecaInt32((this.subtractDecaInt32(toDecaInt32(2), num1)).addDecaInt32(this.multiplyDecaInt32(num1, num1).divideDecaInt32(newValue)))));
         return newValue;
@@ -222,12 +221,12 @@ class DecaInt32 {
     public DecaInt32 ePowerDecaInt32() {
         return ePowerDecaInt32(this);
     }
-    
+
     public DecaInt32 powDecaInt32(DecaInt32 num1, DecaInt32 num2) {
-         // num1 ^ num2 where num1 and num2 can be any real number, even decimals (finally!)
-         return this.ePowerDecaInt32(this.multiplyDecaInt32(num2, this.lnDecaInt32(num1)));
+        // num1 ^ num2 where num1 and num2 can be any real number, even decimals (finally!)
+        return this.ePowerDecaInt32(this.multiplyDecaInt32(num2, this.lnDecaInt32(num1)));
     }
-    
+
     public DecaInt32 powDecaInt32(DecaInt32 num2) {
         return powDecaInt32(this, num2);
     }
