@@ -2,13 +2,16 @@
 package DecaInt.DecaInt32.DecaInt32;
 
 class DecaInt32 {
+
+    // TODO: Make unnecessary public variables/methods private/protected
+
     public int rawValue;
     public int precision;
     public int displayDecimalLen;
     public int decimalPlaces;
-    public int toDeca; // TODO: better naming
+    public int toDeca;
 
-    // TODO: Auto precision, ex: 0.25 input = precision 4, mod of input, then 1 / input?
+    // TODO: Auto precision for double initilization, ex: 0.25 input = precision 4, mod of input, then 1 / input?
 
     public DecaInt32(int rawValue, int precision) {
         this.rawValue = rawValue * precision;
@@ -43,7 +46,7 @@ class DecaInt32 {
     }
 
     public void changePrecision(int precision) {
-        this.rawValue = (int) (((((long) precision * 2147483647) / this.precision) * this.rawValue) / 2147483647);
+        this.rawValue = (int) (((((long) precision * 2147483647) / this.precision) * this.rawValue + 2147483647 + 1073741824) / 2147483647);
         this.precision = precision;
     }
 
@@ -56,12 +59,13 @@ class DecaInt32 {
         this.decimalPlaces = temp;
     }
     // Returns the raw value of the number as the object's precision.
-    public int convertToThisPrecision(DecaInt32 number) {
+    private int convertToThisPrecision(DecaInt32 number) {
         // This is stored as twice the data width as to not overflow the value
         long out = number.rawValue;
 
         if (number.precision != this.precision) {
-            out = (int) (((((long) this.precision * 2147483647) / number.precision) * number.rawValue) / 2147483647);
+            // WARNING! This is untested in extreme cases were number is astronomically high
+            out = (int) (((((long) this.precision * 2147483647) / number.precision) * number.rawValue + 2147483647 + 1073741824) / 2147483647);
         }
         return (int) out;
     }
