@@ -5,11 +5,12 @@ class DecaInt32 {
 
     // TODO: Make unnecessary public variables/methods private/protected
 
+    // NOTE: rawValue may be set to private in the future so you may want to refrain from using it
+    // Same goes for displayDecimalLen and decimalPlaces (which probably will be removed in the future anyway
     public int rawValue;
     public int precision;
     public int displayDecimalLen;
-    public int decimalPlaces;
-    public int toDeca;
+    private int decimalPlaces;
 
     // TODO: Auto precision for double initilization, ex: 0.25 input = precision 4, mod of input, then 1 / input?
 
@@ -29,7 +30,6 @@ class DecaInt32 {
         this.precision = num1.precision;
         this.displayDecimalLen = num1.displayDecimalLen;
         this.decimalPlaces = num1.decimalPlaces;
-        this.toDeca = num1.toDeca;
     }
 
     public void init(int precision) {
@@ -42,11 +42,10 @@ class DecaInt32 {
             temp*=10;
         }
         this.decimalPlaces = temp;
-        this.toDeca = decimalPlaces / precision;
     }
 
     public void changePrecision(int precision) {
-        this.rawValue = (int) (((((long) precision * 2147483647) / this.precision) * this.rawValue + 2147483647 + 1073741824) / 2147483647);
+        this.rawValue = (int) (((((long) precision * 2147483647) / this.precision) * this.rawValue + 1073741824) / 2147483647);
         this.precision = precision;
     }
 
@@ -65,7 +64,7 @@ class DecaInt32 {
 
         if (number.precision != this.precision) {
             // WARNING! This is untested in extreme cases were number is astronomically high
-            out = (int) (((((long) this.precision * 2147483647) / number.precision) * number.rawValue + 2147483647 + 1073741824) / 2147483647);
+            out = (int) (((((long) this.precision * 2147483647) / number.precision) * number.rawValue + 1073741824) / 2147483647);
         }
         return (int) out;
     }
@@ -241,7 +240,7 @@ class DecaInt32 {
 
     // Converts the decaInt value to whatever
     public String toString() {
-        String decimalPoint = String.format("%0"+ ((this.displayDecimalLen - 1)) + "d", Math.abs((this.rawValue % precision) * this.toDeca));
+        String decimalPoint = String.format("%0"+ ((this.displayDecimalLen - 1)) + "d", Math.abs(((long) this.rawValue % precision * decimalPlaces) / this.precision));
         String decaIntToString = String.valueOf((this.rawValue / this.precision)) + "." + decimalPoint;
         return decaIntToString;
     }
@@ -249,15 +248,14 @@ class DecaInt32 {
     // TODO: Make the toInt, and other stuff in a 'utils' class or just format it differently or something
 
     public int toInt() {
-        // Doesn't round.
-        int decaIntToInt = this.rawValue / this.precision;
+        // Rounds to nearest value.
+        int decaIntToInt = (this.rawValue + (this.precision / 2)) / this.precision;
         return decaIntToInt;
     }
 
     // This is the only time this program uses a floating point number.
     public double toDouble() {
-        String decimalPoint = String.format("%0"+ ((this.displayDecimalLen - 1)) + "d", Math.abs((this.rawValue % precision) * this.toDeca));
-        double decaIntToDouble = Double.parseDouble(String.valueOf((this.rawValue / this.precision)) + "." + decimalPoint);
+        double decaIntToDouble = (double) this.rawValue / this.precision;
         return decaIntToDouble;
     }
 
