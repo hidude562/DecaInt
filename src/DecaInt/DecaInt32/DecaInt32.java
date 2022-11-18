@@ -306,12 +306,3 @@ class DecaInt32 {
         return this.rawValue < this.convertToThisPrecision(num1);
     }
 }
-
-class DecaTest {
-    public static void main(String[] args) {
-      DecaInt32 number1 = new DecaInt32(0.5, 100000);
-      DecaInt32 number2 = new DecaInt32(2.5, 100000);
-      
-      System.out.println(number1.lnDecaInt32().toDouble());
-    }
-}
