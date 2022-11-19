@@ -1,6 +1,6 @@
 package DecaInt.DecaInt32.demos.PiDemo;
 
-import DecaInt.DecaInt32.DecaInt32;
+import com.DecaInt.DecaInt32.DecaInt32;
 
 class PiDemo {
     public static void main(String[] args) {
