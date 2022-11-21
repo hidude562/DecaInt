@@ -1,5 +1,5 @@
 //TODO: Test package to ensure it works
-package DecaInt.DecaInt32.DecaInt32;
+package com.DecaInt.DecaInt32.DecaInt32;
 
 class DecaInt32 {
 
