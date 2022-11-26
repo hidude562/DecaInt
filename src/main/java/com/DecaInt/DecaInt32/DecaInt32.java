@@ -74,7 +74,7 @@ class DecaInt32 {
     public void addIntRaw(int number) {
         this.rawValue += number;
     }
-   
+
     // The diference between this and just doing "=" is that this doensn't affect num1 at all
     public void setTo(DecaInt32 num1) {
         this.rawValue = convertToThisPrecision(num1);
@@ -175,21 +175,21 @@ class DecaInt32 {
         // Retrieve E
         final DecaInt32 E = E();
         final DecaInt32 ONE_OVER_E = E.divideDecaInt32(new DecaInt32(1, this.precision), E);
-        
+
         // Constants for diverging num1 to be as close to one as possible
         final DecaInt32 ln2 = new DecaInt32(0, 1073741823);
         ln2.rawValue = 744261116;
-        
+
         final DecaInt32 sqrt2 = new DecaInt32(0, 1073741823);
         sqrt2.rawValue = 1518500246;
-        
+
         final DecaInt32 lnSqrt2 = new DecaInt32(0, 1073741823);
         lnSqrt2.rawValue = 372130558;
-        
+
         final DecaInt32 cubeRoot2 = new DecaInt32(0, 1073741823);
         cubeRoot2.rawValue = 1352829914;
-        
-        
+
+
         DecaInt32 newValue = new DecaInt32(0, this.precision);
         DecaInt32 x = new DecaInt32(num1);
 
@@ -197,9 +197,9 @@ class DecaInt32 {
         // Also the natural log of a multiple of e will always be integer
         // We can use this to skip alot of extra computation.
         // Computational complexity: abs(ceil(ln(n) - 1)) + 3
-        
+
         // Can calculate about 6 decimal points accurately
-        
+
         if(x.greaterThan(ONE_OVER_E)) {
             while(x.greaterThan(E)) {
                 x.setTo(x.divideDecaInt32(x, E));
@@ -211,25 +211,25 @@ class DecaInt32 {
                 newValue.setTo(newValue.subtractDecaInt32(new DecaInt32(1, 1)));
             }
         }
-        
+
         // Finetune the number to be as close to one as possible (for a better approximation without doing much work)
-        
+
         if(x.greaterThan(sqrt2)) {
             x = x.divideDecaInt32(toDecaInt32(2));
             newValue = newValue.addDecaInt32(ln2);
         } else if(x.lessThan(x.divideDecaInt32(toDecaInt32(1), sqrt2))) {
-          	x = x.multiplyDecaInt32(toDecaInt32(2));
+            x = x.multiplyDecaInt32(toDecaInt32(2));
             newValue = newValue.subtractDecaInt32(ln2);
         }
-        
+
         if(x.greaterThan(cubeRoot2)) {
             x = x.divideDecaInt32(sqrt2);
             newValue = newValue.addDecaInt32(lnSqrt2);
         } else if(x.lessThan(x.divideDecaInt32(toDecaInt32(1), cubeRoot2))) {
-          	x = x.multiplyDecaInt32(sqrt2);
+            x = x.multiplyDecaInt32(sqrt2);
             newValue = newValue.subtractDecaInt32(lnSqrt2);
         }
-         
+
         // This looks a *bit* sloppy but it reads:
         // (3 * x * x - 3) / (x * x + 4 * x + 1)
 
@@ -266,6 +266,25 @@ class DecaInt32 {
     }
 
     public DecaInt32 powDecaInt32(DecaInt32 num2) {
+        return powDecaInt32(this, num2);
+    }
+
+    public DecaInt32 powDecaInt32(DecaInt32 num1, int num2) {
+        // This method is faster than the other algorithm
+        if(num2 < 0) {
+            return this.divideDecaInt32(toDecaInt32(1), this.powDecaInt32(num1, 0-num2));
+        } else if (num2 == 0) {
+            // TODO: prevent precision change
+            return toDecaInt32(1);
+        } else if (num2 % 2 == 0) {
+            DecaInt32 temp = this.powDecaInt32(num1, num2 / 2);
+            return temp.multiplyDecaInt32(temp);
+        } else {
+            return this.multiplyDecaInt32(num1, powDecaInt32(num1, num2 - 1));
+        }
+    }
+
+    public DecaInt32 powDecaInt32(int num2) {
         return powDecaInt32(this, num2);
     }
 
