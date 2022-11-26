@@ -156,6 +156,9 @@ class DecaInt32 {
         // Credit to https://math.stackexchange.com/questions/265690/continued-fraction-of-a-square-root for the maths help
         // This uses continued fractions to approximate the sqrt function
 
+        if((num1.lessThan(toDecaInt32(0))))
+            throw new ArithmeticException("Cannot take the square root of " + num1 + "!");
+
         DecaInt32 newValue = new DecaInt32(this.divideDecaInt32(num1, new DecaInt32(2, 1)));
 
         // 'a' is the number being added to the denominator
@@ -262,6 +265,7 @@ class DecaInt32 {
 
     public DecaInt32 powDecaInt32(DecaInt32 num1, DecaInt32 num2) {
         // num1 ^ num2 where num1 and num2 can be any real number, even decimals (finally!)
+        // TODO: This doesn't work with negative numbers !!
         return this.ePowerDecaInt32(this.multiplyDecaInt32(num2, this.lnDecaInt32(num1)));
     }
 
@@ -305,6 +309,16 @@ class DecaInt32 {
         // Rounds to nearest value.
         int decaIntToInt = (this.rawValue + (this.precision / 2)) / this.precision;
         return decaIntToInt;
+    }
+    public DecaInt32 abs() {
+        DecaInt32 newValue = new DecaInt32(this);
+        newValue.rawValue = Math.abs(this.rawValue);
+        return newValue;
+    }
+    public DecaInt32 abs(DecaInt32 num1) {
+        DecaInt32 newValue = new DecaInt32(this);
+        newValue.rawValue = Math.abs(this.convertToThisPrecision(num1));
+        return newValue;
     }
 
     // This is the only time this program uses a floating point number.
