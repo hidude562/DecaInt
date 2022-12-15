@@ -1,5 +1,10 @@
 TODO:
 
+⚠⚠⚠⚠
+CONVERT LOTS OF INSTANCE METHODS INTO STATIC METHODS!!!
+MAKE MOST VARIABLES PRIVATE !!
+
+
 ✔️ Add all basic math operators
 More setTo functions
 Be able to cast an int to a DecaInt (if its possible)
