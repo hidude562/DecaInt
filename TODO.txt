@@ -1,10 +1,10 @@
 TODO:
 
-⚠⚠⚠⚠
-CONVERT LOTS OF INSTANCE METHODS INTO STATIC METHODS!!!
-MAKE MOST VARIABLES PRIVATE !!
+Short-term:
+Check if demos still work
+Migrate computation methods to static instance
 
-
+Long-term:
 ✔️ Add all basic math operators
 More setTo functions
 Be able to cast an int to a DecaInt (if its possible)
@@ -12,4 +12,6 @@ Better syntax for using the class (no unnecessary params)
 Overloaded methods (for example, divide DecaInt by int value)
 Add more complex operators
 ✔️ (kinda, maybe fixed?) Fix broken file structure of this repo / proper package things
+
+Very long-term:
 Add 16/64/128 bit version
