@@ -3,10 +3,6 @@ package com.DecaInt.DecaInt32.DecaInt32;
 
 class DecaInt32 {
 
-        // TODO: Make unnecessary public variables/methods private/protected
-
-        // NOTE: rawValue may be set to private in the future so you may want to refrain from using it
-        // Same goes for displayDecimalLen and decimalPlaces (which probably will be removed in the future anyway
         private int rawValue;
         private int precision;
         private int displayDecimalLen;
@@ -340,22 +336,4 @@ class DecaInt32 {
         public boolean lessThan(DecaInt32 num1) {
             return this.rawValue < this.convertToThisPrecision(num1);
         }
-}
-
-class a {
-    public static void main(String[] args) {
-        // This is a demo using DecaInt32, it uses the Leibniz formula to calculate Pi
-
-        DecaInt32 a = new DecaInt32(10, 100000);
-        DecaInt32 b = new DecaInt32(2, 100000);
-        if(a.lessThan(b)) {
-            System.out.println("a == b");
-        } else {
-            System.out.println("a != b");
-        }
-        System.out.println(b.abs(a));
-        DecaInt32 ba = a.addDecaInt32(b);
-        System.out.println(a.powDecaInt32(a, b));
-        System.out.println(a.E());
-    }
 }
